@@ -10,7 +10,6 @@ export class CheckInOutController {
             const turno = await TurnoService.getById(turno_id);
             if (!turno) return res.status(404).json({ message: "Turno no encontrado" });
 
-            // Validaciones
             const conductor = turno.conductor;
             const transportista = turno.transportista;
 

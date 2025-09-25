@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { sequelize } from "./config/database.js";
+import "./models/associations.js";
 import transportistaRoutes from "./routes/transportistaRoutes.js";
 import conductorRoutes from "./routes/conductorRoutes.js";
 import vehiculoRoutes from "./routes/vehiculoRoutes.js";
@@ -14,7 +15,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rutas
 app.use("/api/transportistas", transportistaRoutes);
 app.use("/api/conductores", conductorRoutes);
 app.use("/api/vehiculos", vehiculoRoutes);

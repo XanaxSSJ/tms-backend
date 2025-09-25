@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.js";
-import { TransportistaModel } from "./transportistaModel.js";
 
 export const ConductorModel = sequelize.define("Conductor", {
     id: {
@@ -36,9 +35,4 @@ export const ConductorModel = sequelize.define("Conductor", {
 }, {
     tableName: "conductores",
     timestamps: true
-});
-
-ConductorModel.belongsTo(TransportistaModel, {
-    foreignKey: "transportista_id",
-    as: "transportista"
 });
