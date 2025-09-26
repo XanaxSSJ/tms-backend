@@ -21,7 +21,10 @@ export class KPIController {
     // 2. Viajes por camión al día
     static async viajesPorCamionAlDia(req, res) {
         try {
-            const data = await KPIService.viajesPorCamionAlDia();
+            const vehiculoId = req.query.vehiculo_id ? Number(req.query.vehiculo_id) : undefined;
+            const fechaInicio = req.query.fecha_inicio || undefined; // formato YYYY-MM-DD
+            const fechaFin = req.query.fecha_fin || undefined;       // formato YYYY-MM-DD
+            const data = await KPIService.viajesPorCamionAlDia({ vehiculoId, fechaInicio, fechaFin });
             res.json({
                 success: true,
                 data: data

@@ -32,6 +32,6 @@ export class TransportistaService {
     }
 
     static validarRUC(transportista) {
-        return transportista && transportista.ruc && transportista.ruc.trim().length === 11;
+        return transportista && transportista.ruc && transportista.ruc.trim().length === 10;
     }
 }

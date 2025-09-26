@@ -43,15 +43,26 @@ export class KPIService {
     }
 
     // 2. Viajes por camión al día
-    static async viajesPorCamionAlDia() {
+    static async viajesPorCamionAlDia({ vehiculoId, fechaInicio, fechaFin } = {}) {
         try {
             // Primero obtenemos los datos agrupados sin el include
+            const where = {};
+            if (vehiculoId) where.vehiculo_id = vehiculoId;
+            if (fechaInicio && fechaFin) {
+                where.fecha = { [Sequelize.Op.between]: [fechaInicio, fechaFin] };
+            } else if (fechaInicio) {
+                where.fecha = { [Sequelize.Op.gte]: fechaInicio };
+            } else if (fechaFin) {
+                where.fecha = { [Sequelize.Op.lte]: fechaFin };
+            }
+
             const viajesAgrupados = await TurnoModel.findAll({
                 attributes: [
                     'vehiculo_id',
                     [Sequelize.fn('DATE', Sequelize.col('fecha')), 'fecha'],
                     [Sequelize.fn('COUNT', Sequelize.col('id')), 'total_viajes']
                 ],
+                where: Object.keys(where).length ? where : undefined,
                 group: ['vehiculo_id', Sequelize.fn('DATE', Sequelize.col('fecha'))],
                 order: [
                     [Sequelize.fn('DATE', Sequelize.col('fecha')), 'DESC'],
@@ -92,7 +103,7 @@ export class KPIService {
             return {
                 viajes: resultado,
                 totalRegistros: resultado.length,
-                mensaje: `Se encontraron ${resultado.length} registros de viajes por camión al día`
+                mensaje: `Se encontraron ${resultado.length} registros de viajes`
             };
         } catch (error) {
             throw new Error(`Error calculando viajes por camión al día: ${error.message}`);
