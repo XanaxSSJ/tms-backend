@@ -8,6 +8,7 @@ import conductorRoutes from "./routes/conductorRoutes.js";
 import vehiculoRoutes from "./routes/vehiculoRoutes.js";
 import turnoRoutes from "./routes/turnoRoutes.js";
 import checkInOutRoutes from "./routes/checkInOutRoutes.js";
+import kpiRoutes from "./routes/kpiRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,8 @@ app.use("/api/conductores", conductorRoutes);
 app.use("/api/vehiculos", vehiculoRoutes);
 app.use("/api/turnos", turnoRoutes);
 app.use("/api/checkinout", checkInOutRoutes);
+app.use("/api/kpi", kpiRoutes);
+
 
 app.get("/", (req, res) => {
     res.json({ message: "Servidor corriendo con Bun + Express 🚀" });
