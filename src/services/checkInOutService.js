@@ -1,5 +1,6 @@
 import { CheckInOutModel } from "../models/checkInOutModel.js";
 import { CheckInOutDTO } from "../dto/checkInOutDTO.js";
+import { TurnoModel } from "../models/turnoModel.js";
 
 export class CheckInOutService {
     static async getAll() {
@@ -20,6 +21,8 @@ export class CheckInOutService {
             registro.hora_entrada = new Date();
             await registro.save();
         }
+        // Actualizar estado del turno a "en proceso"
+        await TurnoModel.update({ estado: "en proceso" }, { where: { id: turno_id } });
         return new CheckInOutDTO(registro);
     }
 
@@ -28,6 +31,8 @@ export class CheckInOutService {
         if (!registro) throw new Error("Registro de check-in no encontrado");
         registro.hora_salida = new Date();
         await registro.save();
+        // Actualizar estado del turno a "completado"
+        await TurnoModel.update({ estado: "completado" }, { where: { id: turno_id } });
         return new CheckInOutDTO(registro);
     }
 
