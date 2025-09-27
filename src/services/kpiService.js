@@ -142,7 +142,7 @@ export class KPIService {
             }, 0);
 
             // Asumir un costo fijo por turno (esto debería venir de una tabla de costos)
-            const costoPorTurno = 150; // Costo estimado por turno
+            const costoPorTurno = 30000; // Costo estimado por turno
             const costoTotal = turnosCompletados.length * costoPorTurno;
             const costoPorTonelada = totalToneladas > 0 ? costoTotal / totalToneladas : 0;
 

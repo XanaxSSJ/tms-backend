@@ -34,8 +34,15 @@ export class ConductorService {
     static validarLicencia(c) {
         if (!c.licencia || c.licencia.trim().length < 6) return false;
         if (!c.fecha_vencimiento_licencia) return false;
+        
         const hoy = new Date();
-        if (new Date(c.fecha_vencimiento_licencia) < hoy) return false;
-        return true;
+        const fechaVencimiento = new Date(c.fecha_vencimiento_licencia);
+        
+        // Normalizar fechas a medianoche para comparación solo por fecha (sin hora)
+        const hoyNormalizado = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+        const vencimientoNormalizado = new Date(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth(), fechaVencimiento.getDate());
+        
+        // La licencia es válida si la fecha de vencimiento es mayor o igual a hoy
+        return vencimientoNormalizado >= hoyNormalizado;
     }
 }

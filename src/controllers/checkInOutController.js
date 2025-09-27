@@ -2,16 +2,23 @@ import { CheckInOutService } from "../services/checkInOutService.js";
 import { TurnoService } from "../services/turnoService.js";
 import { ConductorService } from "../services/conductorService.js";
 import { TransportistaService } from "../services/transportistaService.js";
+import { TurnoModel } from "../models/turnoModel.js";
 
 export class CheckInOutController {
     static async checkIn(req, res) {
         try {
             const { turno_id } = req.body;
-            const turno = await TurnoService.getById(turno_id);
+            
+            // Obtener el turno directamente del modelo para acceder a los IDs
+            const turno = await TurnoModel.findByPk(turno_id);
             if (!turno) return res.status(404).json({ message: "Turno no encontrado" });
 
-            const conductor = turno.conductor;
-            const transportista = turno.transportista;
+            // Obtener los objetos completos del conductor y transportista para validación
+            const conductor = await ConductorService.getById(turno.conductor_id);
+            const transportista = await TransportistaService.getById(turno.transportista_id);
+
+            if (!conductor) return res.status(404).json({ message: "Conductor no encontrado" });
+            if (!transportista) return res.status(404).json({ message: "Transportista no encontrado" });
 
             if (!ConductorService.validarLicencia(conductor)) {
                 return res.status(400).json({ message: "Licencia del conductor inválida o vencida" });
